@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { Activity } from "../../../app/models/activity";
+import { Activity } from "../../../app/models/Activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
 import {v4 as uuid} from 'uuid';
 
@@ -48,9 +48,6 @@ export default observer(function ActivityForm() {
         navigate(`/activities/${activity.id}`)
       })
     }
-    activity.id
-      ? updateActivity(activity)
-      : createActivity(activity);
   }
 
   function handleInputChange(

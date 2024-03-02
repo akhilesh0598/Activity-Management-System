@@ -14,11 +14,9 @@ function App() {
       <Container style={{marginTop:'7em'}}>
         <Outlet/>
       </Container>
-
       </>
     )}
     </>
   );
 }
-
 export default observer(App);
