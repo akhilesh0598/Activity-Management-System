@@ -1,7 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { Activity } from "../models/Activity";
 import agent from "../api/agent";
-import { v4 as uuid } from "uuid";
+import {v4 as uuid} from 'uuid';
+import { format } from "date-fns";
 
 export default class ActivityStore {
   activityResgistry = new Map<string, Activity>();
@@ -15,33 +16,33 @@ export default class ActivityStore {
   }
 
   get activitiesByDate() {
-    return Array.from(this.activityResgistry.values()).sort((a, b) => {
-      return Date.parse(a.date) - Date.parse(b.date);
-    });
+    return Array.from(this.activityResgistry.values()).sort((a, b) => 
+       a.date!.getTime() - b.date!.getTime());
   }
 
   get groupedActivities()
   {
     return Object.entries(this.activitiesByDate.reduce((activities,activity)=>{
-        const date=activity.date;
+        const date=format(activity.date!,'dd MMM yyyy')
         activities[date]=activities[date] ? [...activities[date],activity]:[activity];
         return activities;
-    },{} as {[key:string]:Activity[]}))
+    },{} as {[key:string]: Activity[]}))
   }
 
   loadActivities = async () => {
     this.setLoadingInitial(true);
     try {
       const activities = await agent.Activities.list();
-      activities.forEach((activity) => {
-        this.setActivity(activity);
-      });
+      console.log(activities);
+        activities.forEach(activity => {
+          this.setActivity(activity);
+      })
       this.setLoadingInitial(false);
     } catch (error) {
       console.log(error);
       this.setLoadingInitial(false);
     }
-  };
+  }
 
   loadActivity = async (id: string) => {
     let activity = this.getActivity(id);
@@ -49,7 +50,7 @@ export default class ActivityStore {
       this.selectedActivity = activity;
       return activity;
     } else {
-      this.setLoadingInitial(true);
+      this.loadingInitial=true;
       try {
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
@@ -64,12 +65,14 @@ export default class ActivityStore {
       }
     }
   };
-  private setActivity(activity: Activity) {
-    activity.date = activity.date.split("T")[0];
-    this.activityResgistry.set(activity.id, activity);
+
+  private setActivity=(activity: Activity)=>
+  {
+      activity.date = new Date(activity.date!);
+      this.activityResgistry.set(activity.id, activity);
   }
 
-  private getActivity(id: string) {
+  private getActivity=(id: string)=> {
     return this.activityResgistry.get(id);
   }
 

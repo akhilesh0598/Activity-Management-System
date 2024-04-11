@@ -11,22 +11,23 @@ export default observer(function ActivityDashboard() {
   const { loadActivities, activityResgistry } = activityStore;
 
   useEffect(() => {
-    if (activityResgistry.size <= 1) loadActivities();
-  }, [loadActivities]);
+    if (activityResgistry.size <= 1) 
+    {
+      loadActivities();
+    }
+  }, [loadActivities,activityResgistry.size]);
 
   if (activityStore.loadingInitial)
-    return <LoadingComponent content="Loading App" />;
+    return <LoadingComponent content="Loading App..." />;
 
   return (
-    <>
       <Grid>
         <Grid.Column width="10">
           <ActivityList />
         </Grid.Column>
-        <GridColumn width="6">
+        <Grid.Column width="6">
           <ActivityFilters/>
-        </GridColumn>
+        </Grid.Column>
       </Grid>
-    </>
   );
 });

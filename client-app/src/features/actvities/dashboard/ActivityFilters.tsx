@@ -7,14 +7,14 @@ export default function ActivityFilters()
         <>
         <Header>
         <Menu vertical size="large" style={{width:'100%',marginTop:25}}>
-            <Header icon={'filter'} attached color="teal" content="Filters">
+            <Header attached color="teal">
                 <Menu.Item content='All Activities'/>
                 <Menu.Item content="I'm going"/>
                 <Menu.Item content="I'm hosting"/>
             </Header>
         </Menu>
-        </Header>
         <Calendar/>
+        </Header>
         </>
-    )
+    );
 }
