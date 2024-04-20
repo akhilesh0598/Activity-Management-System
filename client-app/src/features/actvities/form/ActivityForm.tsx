@@ -2,10 +2,10 @@ import { Button, Segment } from "semantic-ui-react";
 import { useEffect, useState } from "react";
 import { useStore } from "../../../app/stores/store";
 import { observer } from "mobx-react-lite";
-import { Link, useParams } from "react-router-dom";
-import { Activity } from "../../../app/models/Activity";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ActivityFormValues } from "../../../app/models/Activity";
 import LoadingComponent from "../../../app/layout/LoadingComponent";
-//import { v4 as uuid } from "uuid";
+import { v4 as uuid } from "uuid";
 import { Formik,Form } from "formik";
 import * as Yup from 'yup';
 import MyTextInput from "../../../app/common/form/MyTextInput";
@@ -17,24 +17,16 @@ import MyDateInput from "../../../app/common/form/MyDateInput";
 export default observer(function ActivityForm() {
   const { activityStore } = useStore();
   const {
-   // createActivity,
-    //updateActivity,
-    loading,
+    createActivity,
+    updateActivity,
     loadActivity,
     loadingInitial,
   } = activityStore;
-  const { id } = useParams();
-  //const navigate = useNavigate();
+  const { id } = useParams<{id:string}>();
+  const navigate = useNavigate();
 
-  const [activity, setActivity] = useState<Activity>({
-    id: "",
-    title: "",
-    date: null,
-    description: "",
-    category: "",
-    city: "",
-    venue: "",
-  });
+  const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
+
   const validationSchema=Yup.object({
     title:Yup.string().required('The activity title is required'),
     description:Yup.string().required('The activity description is required'),
@@ -47,32 +39,28 @@ export default observer(function ActivityForm() {
   useEffect(() => {
     if (id)
       loadActivity(id).then((activity) => {
-        setActivity(activity!);
+        setActivity(new ActivityFormValues(activity));
       });
   }, [id, loadActivity]);
 
-  // function handleSubmit() {
-  //   if(!activity.id)
-  //   {
-  //     activity.id=uuid();
-  //     createActivity(activity).then(()=>{
-  //       navigate(`/activities/${activity.id}`)
-  //     })
-  //   }
-  //   else
-  //   {
-  //     updateActivity(activity).then(()=>{
-  //       navigate(`/activities/${activity.id}`)
-  //     })
-  //   }
-  // }
-
-  // function handleChange(
-  //   event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  // ) {
-  //   const { name, value } = event.target;
-  //   setActivity({ ...activity, [name]: value });
-  // }
+  function handleFormSubmit(activity:ActivityFormValues) {
+    if(!activity.id)
+    {
+      let newActivity={
+        ...activity,
+        id:uuid()
+      }
+      createActivity(newActivity).then(()=>{
+        navigate(`/activities/${activity.id}`)
+      })
+    }
+    else
+    {
+      updateActivity(activity).then(()=>{
+        navigate(`/activities/${activity.id}`)
+      })
+    }
+  }
 
   if (loadingInitial) return <LoadingComponent content="Loading activity..." />;
   return (
@@ -81,9 +69,9 @@ export default observer(function ActivityForm() {
         validationSchema={validationSchema}
         enableReinitialize
         initialValues={activity}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => handleFormSubmit(values)}
       >
-        {({handleSubmit }) => (
+        {({handleSubmit,isValid,isSubmitting,dirty }) => (
           <Form className="ui form" onSubmit={handleSubmit} autoComplete="off">
             <MyTextInput name="title" placeholder="Title" />
             <MyTextArea rows={3} name="description" placeholder="Description"/>
@@ -95,9 +83,14 @@ export default observer(function ActivityForm() {
             timeCaption="time"
             dateFormat={'MMM d,yyyy h:mm aa'}
              />
-             <MyTextInput name="city" placeholder="City" />
+            <MyTextInput name="city" placeholder="City" />
             <MyTextInput name="venue" placeholder="Venue" />
-            <Button loading={loading} floated="right" positive type="submit" content="Submit" />
+
+            <Button 
+              disabled={isSubmitting ||!dirty||!isValid} 
+              loading={isSubmitting} 
+              floated="right" 
+              positive type="submit" content="Submit" />
             <Button as={Link} to="/activities" floated="right" type="button" content="Cancel" />
           </Form>
         )}
