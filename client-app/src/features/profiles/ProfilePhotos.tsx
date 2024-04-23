@@ -34,8 +34,6 @@ export default observer( function ProfilePhotos({profile}:Props)
     {
         setTarget(e.currentTarget.name);
         deletePhoto(photo);
-
-
     }
 
     return (
@@ -78,7 +76,7 @@ export default observer( function ProfilePhotos({profile}:Props)
                                             color="red" 
                                             icon='trash'
                                             loading={target==photo.id&&loading}
-                                            onClick={e=>hnadleSetMainPhoto(photo,e)}
+                                            onClick={e=>handleDeletePhoto(photo,e)}
                                             disabled={photo.isMain}
                                             name={photo.id}
                                         />

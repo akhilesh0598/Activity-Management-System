@@ -5,7 +5,6 @@ import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
 import { Photo, Profile } from "../models/profile";
-import { fi } from "date-fns/locale";
 
 const sleep = (delay: number) => {
   return new Promise((resolve) => {
@@ -102,12 +101,18 @@ const Profiles={
       headers:{'Content-Type':'multipart/form-data'}
     })
   },
-  setMainPhoto=(id:string)=>{
+  setMainPhoto:(id:string)=>{
     requests.post(`/photos/${id}/setMain`,{});
     deletePhoto:(id:string)=>{
       requests.delete(`photos/${id}`)
     }
-  }
+  },
+  deletePhoto:(id:string)=>{
+    return requests.delete(`/photos/${id}`);
+  },
+  updateProfile:(profile:Partial<Profile>)=>requests.put(`/profiles`,profile),
+  updateFollowing:(username:string)=>requests.post(`/follow/${username}`,{}),
+  listFollowings:(username:string,predicate:string)=>requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
 
 }
 const agent = {
