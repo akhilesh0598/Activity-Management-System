@@ -1,18 +1,18 @@
 import { Container } from "semantic-ui-react";
 import Navbar from "./NavBar";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import HomePage from "../../features/home/HomePage";
 import { ToastContainer } from "react-toastify";
 import { useStore } from "../stores/store";
 import { useEffect } from "react";
-import { el } from "date-fns/locale";
 import LoadingComponent from "./LoadingComponent";
 import ModalContainer from "../common/modals/ModalContainer";
 
 function App() {
   const location =useLocation();
   const {comonStore,userStore}=useStore();
+
   useEffect(()=>{
     if(comonStore.token)
     {
@@ -23,10 +23,13 @@ function App() {
       comonStore.setAppLoaded();
     }
   },[comonStore,userStore])
+
   if(!comonStore.appLoaded)
     return <LoadingComponent content="Loading App..."/>
+
   return (
     <>
+    <ScrollRestoration />
     <ModalContainer/>
     <ToastContainer position="bottom-right" hideProgressBar theme="colored"/>
     {location.pathname==='/'?<HomePage />:(

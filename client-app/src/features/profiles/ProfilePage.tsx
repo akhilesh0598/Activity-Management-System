@@ -3,7 +3,6 @@ import ProfileHeader from "./ProfileHeader";
 import ProfileContent from "./ProfileContent";
 import { observer } from "mobx-react-lite";
 import { useParams } from "react-router-dom";
-import { string } from "yup";
 import { useStore } from "../../app/stores/store";
 import { useEffect } from "react";
 import LoadingComponent from "../../app/layout/LoadingComponent";
@@ -20,7 +19,7 @@ export default observer( function ProfilePage()
         return ()=>{
             setActiveTab(0);
         }
-    },[loadProfile,username])
+    },[loadProfile,username,setActiveTab])
 
     if(loadingProfile)
         return <LoadingComponent content="Loading profile..."/>

@@ -1,6 +1,7 @@
 import {useCallback} from "react";
 import {useDropzone} from 'react-dropzone'
 import { Header, Icon } from "semantic-ui-react";
+import { CSSProperties } from "react";
 
 interface Props{
     setFiles:(files:any)=>void;
@@ -9,7 +10,7 @@ interface Props{
 export default function PhotoWidgetDropzone({setFiles}:Props)
 {
 
-    const dzStyle={
+    const dzStyle:CSSProperties={
         border:'dashed 3px #eee',
         borderColor:'#eee',
         borderRadius:'5px',
@@ -31,8 +32,9 @@ export default function PhotoWidgetDropzone({setFiles}:Props)
     },[setFiles]);
 
     const {getRootProps,getInputProps,isDragActive}=useDropzone({onDrop});
+
     return (
-        <div {...getRootProps()} style={isDragActive ? {...dzStyle,...dzActive} : dzStyle} >
+        <div {...getRootProps()} style={isDragActive ? ({...dzStyle,...dzActive}) : dzStyle} >
             <input {...getInputProps()} />
             <Icon name="upload" size="huge" />
             <Header content='Drop image here' />

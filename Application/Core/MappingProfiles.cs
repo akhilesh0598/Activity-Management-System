@@ -13,7 +13,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            var currentUser=null;
+            var currentUser="";
             CreateMap<Activity,Activity>();
             CreateMap<Activity,ActivityDto>()
                 .ForMember(d=>d.HostUsername,o=>o.
