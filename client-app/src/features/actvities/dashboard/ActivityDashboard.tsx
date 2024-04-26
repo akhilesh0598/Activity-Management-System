@@ -25,7 +25,7 @@ export default observer(function ActivityDashboard() {
     {
       loadActivities();
     }
-  }, [loadActivities,activityResgistry.size]);
+  }, [loadActivities,activityResgistry]);
 
 
   return (

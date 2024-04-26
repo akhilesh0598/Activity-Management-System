@@ -20,7 +20,8 @@ export default observer(function ActivityDetails() {
 
   const { id } = useParams<{id:string}>();
 
-  useEffect(() => {
+  useEffect(() => 
+  {
     if (id) loadActivity(id);
     return ()=>clearSelectedActivity();
   }, [id, loadActivity,clearSelectedActivity]);

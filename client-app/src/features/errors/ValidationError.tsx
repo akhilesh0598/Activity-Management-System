@@ -11,7 +11,7 @@ export default function ValidationError({errors}:Props)
                 errors&&(
                     <Message.List>
                         {
-                            errors.map((error:string,i)=>(
+                            errors.map((error:string,i:any)=>(
                                 <Message.Item key={i}>{error}</Message.Item>
                             ))
                         }

@@ -19,8 +19,6 @@ export default observer( function ProfileHeader({profile}:Props)
                             <Item.Content verticalAlign="middle">
                                 <Header as={"h1"} content={profile.displayName} />
                             </Item.Content>
-                          
-
                         </Item>
                     </Item.Group>
 
@@ -31,12 +29,9 @@ export default observer( function ProfileHeader({profile}:Props)
                         <Statistic label="Following" value={profile.followingCount}/>
                     </Statistic.Group>
                     <Divider/>
-                <FollowButton profile={profile} />
-
+                    <FollowButton profile={profile} />
                 </Grid.Column>
-
             </Grid>
-
         </Segment>
     )
 })

@@ -11,5 +11,4 @@ export default function RequireAuth()
         return <Navigate to={'/'} state={{from:location}}/>
     }
     return <Outlet />
-
 }

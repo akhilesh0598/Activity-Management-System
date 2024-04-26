@@ -80,7 +80,6 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                 <Comment.Group>
                     {
                         commentStore.comments.map((comment)=>(
-
                     <Comment key={comment.id}>
                         <Comment.Avatar src={comment.image||'/assets/user.png'}/>
                         <Comment.Content>
@@ -91,14 +90,8 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                             <Comment.Text style={{whiteSpace:'pre-wrap'}}>{comment.body}</Comment.Text>
                         </Comment.Content>
                     </Comment>
-
                         ))
                     }
-                    
-                    
-                    
-
-                    
                 </Comment.Group>
             </Segment>
         </>

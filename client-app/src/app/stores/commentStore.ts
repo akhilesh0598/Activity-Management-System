@@ -19,11 +19,11 @@ export default class CommentStore
                 .withUrl(import.meta.env.VITE_CHAT_URL+'?activityId='+activityId,
                     {
                         accessTokenFactory:()=>store.userStore.user?.token as string
-                        
                     }
                 ).withAutomaticReconnect()
                 .configureLogging(LogLevel.Information)
                 .build();
+
             this.hubConnection.start().catch(error=>console.log('Error establishing the connection: ',error));
             this.hubConnection.on('LoadComments',(comments:ChatComment[])=>{
                 runInAction(()=>{
@@ -33,7 +33,7 @@ export default class CommentStore
                     this.comments=comments;
                 })
             })
-            this.hubConnection.on('ReceivedComment',(comment: ChatComment)=>{
+            this.hubConnection.on('ReceiveComment',(comment: ChatComment)=>{
                 runInAction(()=>{
                     comment.createdAt=new Date(comment.createdAt);
                     this.comments.unshift(comment);

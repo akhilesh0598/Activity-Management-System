@@ -1,7 +1,8 @@
 import { Modal } from "semantic-ui-react";
 import { useStore } from "../../stores/store";
+import { observer } from "mobx-react-lite";
 
-export default function ModalStore()
+export default observer( function ModalStore()
 {
     const {modalStore}=useStore();
     return(
@@ -11,4 +12,4 @@ export default function ModalStore()
             </Modal.Content>
         </Modal>
     )
-}
+})

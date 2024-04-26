@@ -27,7 +27,6 @@ export default observer( function ProfilePhotos({profile}:Props)
     {
         setTarget(e.currentTarget.name);
         setMainPhoto(photo);
-
     }
 
     function handleDeletePhoto(photo:Photo,e:SyntheticEvent<HTMLButtonElement>)

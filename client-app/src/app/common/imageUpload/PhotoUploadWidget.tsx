@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import { Button, Grid, Header } from "semantic-ui-react";
 import PhotoWidgetDropzone from "./PhotoWidgetDropzone";
 import PhotoWidgetCropper from "./PhotoWidgetCropper";
+import { observer } from "mobx-react-lite";
 
 interface Props{
   loading: boolean;
   uploadPhoto:(file:Blob)=>void;
 }
 
-export default function PhotoUploadWidget({loading,uploadPhoto}:Props)
+export default observer( function  PhotoUploadWidget({loading,uploadPhoto}:Props)
 {
     const [files,setFiles]=useState<any>([]);
     const [cropper,setCropper]=useState<Cropper>()
@@ -21,7 +22,6 @@ export default function PhotoUploadWidget({loading,uploadPhoto}:Props)
                 uploadPhoto(blob!);
             })
         }
-
     }
 
     useEffect(()=>{
@@ -33,17 +33,19 @@ export default function PhotoUploadWidget({loading,uploadPhoto}:Props)
     },[files])
 
     return (
+        <>
         <Grid>
+            <Grid.Row/>
             <Grid.Column width={4}>
 
-                <Header sub color="teal" content="Stop 1-Add Photo"/>  
+                <Header sub color="teal" content="Step 1-Add Photo"/>  
                 <PhotoWidgetDropzone setFiles={setFiles} />
 
             </Grid.Column>
             <Grid.Column width={1}/>
 
             <Grid.Column width={4}>
-                <Header sub color="teal" content="Stop 2-Resize image"/>
+                <Header sub color="teal" content="Step 2-Resize image"/>
                 {
                     files && files.length>0 &&
                     (
@@ -57,7 +59,7 @@ export default function PhotoUploadWidget({loading,uploadPhoto}:Props)
             <Grid.Column width={1}/>
 
             <Grid.Column width={4}>
-                <Header sub color="teal" content="Stop 3-Preview & Upload"/>
+                <Header sub color="teal" content="Step 3-Preview & Upload"/>
                 {
                     files&&files.length>0 &&
                 <>
@@ -66,12 +68,12 @@ export default function PhotoUploadWidget({loading,uploadPhoto}:Props)
                     <Button loading={loading}  onClick={onCrop} positive icon="check" />
                     <Button disabled={loading} onClick={()=>setFiles([])} icon="close" />
                 </Button.Group>
-
                 </>
             }
             </Grid.Column>
 
         </Grid>
+        </>
 
     )
-}
+})

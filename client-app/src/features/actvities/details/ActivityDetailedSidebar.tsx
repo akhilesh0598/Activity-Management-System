@@ -1,15 +1,14 @@
 import { Segment, List, Label, Item, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
-import { Activity } from "../../../app/models/Activity";
+import { Activity } from "../../../app/models/activity";
 
 interface Props {
   activity: Activity;
 }
 
-export default observer(function ActivityDetailedSidebar({
-  activity: { attendees, host },
-}: Props) {
+export default observer(function ActivityDetailedSidebar({activity: { attendees, host },}: Props) 
+{
   if (!attendees) return null;
   return (
     <>
@@ -45,8 +44,7 @@ export default observer(function ActivityDetailedSidebar({
                 </Item.Header>
                 {
                   attendee.following && 
-                
-                <Item.Extra style={{ color: "orange" }}>Following</Item.Extra>
+                    <Item.Extra style={{ color: "orange" }}>Following</Item.Extra>
                 }
               </Item.Content>
             </Item>

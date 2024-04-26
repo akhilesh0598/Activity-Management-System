@@ -16,7 +16,6 @@ export default observer( function ProfileFollowings()
                     floated="left" 
                     icon={'user'} 
                     content={activeTab==3?`People following ${profile?.displayName}`:`People ${profile?.displayName} is follow`} />
-
                 </Grid.Column>
 
                 <Grid.Column width={16}>
@@ -28,7 +27,6 @@ export default observer( function ProfileFollowings()
                         }
                     </Card.Group>
                 </Grid.Column>
-
             </Grid>
         </Tab.Pane>
     )

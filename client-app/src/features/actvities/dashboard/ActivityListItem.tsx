@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/models/Activity";
+import { Activity } from "../../../app/models/activity";
 import { observer } from "mobx-react-lite";
 import { format } from "date-fns";
 import ActivityListItemAttendee from "./ActivityListItemAttendee";
@@ -37,7 +37,7 @@ export default observer(function ActivityListItem({ activity }: Props) {
                     {activity.isGoing && !activity.isHost && (
                         <Item.Description>
                             <Label basic color="green">
-                                You are going to this activity
+                                You are going to this activity!
                             </Label>
                         </Item.Description>
                     )}

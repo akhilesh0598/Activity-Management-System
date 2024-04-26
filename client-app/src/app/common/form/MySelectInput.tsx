@@ -4,7 +4,7 @@ import { Form, Label, Select } from "semantic-ui-react";
 interface Props{
     placeholder:string;
     name:string;
-    options:{text:string,value:string}[];
+    options:any;//{text:string,value:string}[]
     label?:string;
 }
 export default function MySelectInput(props:Props)

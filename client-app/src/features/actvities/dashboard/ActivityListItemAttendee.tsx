@@ -12,7 +12,6 @@ export default observer( function ActivityListItemAttendee({attendees}:Props)
     const styles={
         borderColor:'orange',
         borderWidth:3
-
     }
     return (
         <List horizontal>

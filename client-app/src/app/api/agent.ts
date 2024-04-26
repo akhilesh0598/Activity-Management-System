@@ -1,10 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { Activity, ActivityFormValues } from "../models/Activity";
 import { toast } from "react-toastify";
+import { Activity, ActivityFormValues } from "../models/activity";
 import { router } from "../router/Routes";
 import { store } from "../stores/store";
 import { User, UserFormValues } from "../models/user";
-import { Photo, Profile } from "../models/profile";
+import { Photo, Profile, UserActivity } from "../models/profile";
 import { PaginatedResult } from "../models/pagination";
 
 const sleep = (delay: number) => {
@@ -21,7 +21,7 @@ axios.interceptors.request.use(config=>{
   const token=store.comonStore.token;
   if(token) config.headers.Authorization=`Bearer ${token}`;
   return config;
-})
+});
 
 axios.interceptors.response.use( async (response) => {
     if(import.meta.env.DEV)
@@ -82,7 +82,7 @@ const requests = {
   get: <T>(url: string) => axios.get<T>(url).then(responseBody),
   post: <T>(url: string, body: {}) => axios.post<T>(url, body).then(responseBody),
   put: <T>(url: string, body: {}) => axios.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
+  del: <T>(url: string) => axios.delete<T>(url).then(responseBody),
 };
 
 const Activities = {
@@ -90,7 +90,7 @@ const Activities = {
   details: (id: string) => requests.get<Activity>(`/activities/${id}`),
   create: (activity: ActivityFormValues) => requests.post<void>("/activities", activity),
   update: (activity: ActivityFormValues) => requests.put<void>(`/activities/${activity.id}`, activity),
-  delete: (id: string) => requests.delete<void>(`/activities/${id}`),
+  delete: (id: string) => requests.del<void>(`/activities/${id}`),
   attend:(id:string)=>requests.post<void>(`/activities/${id}/attend`,{})
 };
 
@@ -108,19 +108,12 @@ const Profiles={
       headers:{'Content-Type':'multipart/form-data'}
     })
   },
-  setMainPhoto:(id:string)=>{
-    requests.post(`/photos/${id}/setMain`,{});
-    deletePhoto:(id:string)=>{
-      requests.delete(`photos/${id}`)
-    }
-  },
-  deletePhoto:(id:string)=>{
-    return requests.delete(`/photos/${id}`);
-  },
+  setMainPhoto:(id:string)=>requests.post(`/photos/${id}/setMain`,{}),
+  deletePhoto:(id:string)=>requests.del(`photos/${id}`),
   updateProfile:(profile:Partial<Profile>)=>requests.put(`/profiles`,profile),
   updateFollowing:(username:string)=>requests.post(`/follow/${username}`,{}),
-  listFollowings:(username:string,predicate:string)=>requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`)
-
+  listFollowings:(username:string,predicate:string)=>requests.get<Profile[]>(`/follow/${username}?predicate=${predicate}`),
+  listActivities:(username:string,predicate:string)=>requests.get<UserActivity[]>(`/profiles/${username}/activities?predicate=${predicate}`)
 }
 const agent = {
   Activities,

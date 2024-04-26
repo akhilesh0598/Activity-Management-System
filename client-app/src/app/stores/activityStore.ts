@@ -1,8 +1,7 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { Activity, ActivityFormValues } from "../models/Activity";
+import { Activity, ActivityFormValues } from "../models/activity";
 import agent from "../api/agent";
 import {v4 as uuid} from 'uuid';
-import { format } from "date-fns";
 import { store } from "./store";
 import { Profile } from "../models/profile";
 import { Pagination, PagingParams } from "../models/pagination";
@@ -61,13 +60,7 @@ export default class ActivityStore {
         this.predicate.delete('startDate');
         this.predicate.set('startDate',value);
         break;
-      
-
-           
-
-
     }
-
   }
   get axiosParams()
   {
@@ -87,18 +80,19 @@ export default class ActivityStore {
     return params;
   }
 
-  get activitiesByDate() {
-    return Array.from(this.activityResgistry.values()).sort((a, b) => 
-       a.date!.getTime() - b.date!.getTime());
-  }
-
   get groupedActivities()
   {
-    return Object.entries(this.activitiesByDate.reduce((activities,activity)=>{
-        const date=format(activity.date!,'dd MMM yyyy')
+    return Object.entries(
+      this.activitiesByDate.reduce((activities,activity)=>{
+        const date=activity.date!.toISOString().split('T')[0];
         activities[date]=activities[date] ? [...activities[date],activity]:[activity];
         return activities;
     },{} as {[key:string]: Activity[]}))
+  }
+
+  get activitiesByDate() {
+    return Array.from(this.activityResgistry.values()).sort((a, b) => 
+       a.date!.getTime() - b.date!.getTime());
   }
 
   loadActivities = async () => {
@@ -115,7 +109,6 @@ export default class ActivityStore {
       this.setLoadingInitial(false);
     }
   }
-
   setPagination=(pagination:Pagination)=>{
     this.pagination=pagination;
   }
@@ -130,9 +123,7 @@ export default class ActivityStore {
       try {
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
-        runInAction(() => {
-          this.selectedActivity = activity;
-        });
+        runInAction(() => this.selectedActivity = activity);
         this.setLoadingInitial(false);
         return activity;
       } catch (error) {
@@ -175,9 +166,7 @@ export default class ActivityStore {
       newActivity.hostUsername=user!.username;
       newActivity.attendees=[attendee];
       this.setActivity(newActivity);
-      runInAction(() => {
-        this.selectedActivity = newActivity;
-      });
+      runInAction(()=> this.selectedActivity = newActivity);
     } catch (error) {
       console.log(error);
     }
@@ -269,6 +258,7 @@ export default class ActivityStore {
   clearSelectedActivity=()=>{
     this.selectedActivity=undefined;
   }
+
   updateAttendeeFollowing=(username:string)=>{
     this.activityResgistry.forEach(activity=>{
       activity.attendees.forEach(attendee=>{
