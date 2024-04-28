@@ -11,7 +11,6 @@ namespace Application.Photos
         public class Commond :IRequest<Result<Unit>>
         {
             public string  Id { get; set; }
-
         }
 
         public class Handler : IRequestHandler<Commond, Result<Unit>>
@@ -25,6 +24,7 @@ namespace Application.Photos
                 _userAccessor = userAccessor;
                 _context = context;
             }
+            
             public async Task<Result<Unit>> Handle(Commond request, CancellationToken cancellationToken)
             {
                 var user=await _context.Users.Include(p=>p.Photos)

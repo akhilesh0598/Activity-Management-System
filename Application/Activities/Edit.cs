@@ -14,6 +14,7 @@ namespace Application.Activities
         {
             public Activity Activity { get; set; }
         }
+
         public class CommandValidator:AbstractValidator<Command>
         {
             public CommandValidator()
@@ -21,10 +22,12 @@ namespace Application.Activities
                 RuleFor(x=>x.Activity).SetValidator(new ActivityValidator());
             }
         }
+
         public class Handler : IRequestHandler<Command,Result<Unit>>
         {
             private readonly DataContext _context;
             private readonly IMapper _mapper;
+            
             public Handler(DataContext context,IMapper mapper)
             {
                 _mapper = mapper;

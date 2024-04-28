@@ -20,7 +20,7 @@ namespace API.SignalR
         {
             var comment =await _mediator.Send(commond);
             await Clients.Group(commond.ActivityId.ToString())
-                .SendAsync("ReceiverComment",comment.Value);
+                .SendAsync("ReceiveComment",comment.Value);
         }
         public override async Task OnConnectedAsync()
         {

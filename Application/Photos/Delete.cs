@@ -11,7 +11,6 @@ namespace Application.Photos
         public class Commond :IRequest<Result<Unit>>
         {
             public string Id { get; set; }
-
         }
 
         public class Handler : IRequestHandler<Commond, Result<Unit>>
@@ -35,7 +34,6 @@ namespace Application.Photos
                     .FirstOrDefaultAsync(x=>x.UserName==_userAccessor.GetUserName());
 
                 if(user==null) return null;
-
                 
                 var photo=user.Photos.FirstOrDefault(x=>x.Id==request.Id);
                 if(photo==null) return null;

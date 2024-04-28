@@ -30,6 +30,7 @@ namespace Application.Photos
                 _context = context;
                 _photoAccessor = photoAccessor;
             }
+            
             public async Task<Result<Photo>> Handle(Commond request, CancellationToken cancellationToken)
             {
                 var user=await _context.Users.Include(p=>p.Photos)

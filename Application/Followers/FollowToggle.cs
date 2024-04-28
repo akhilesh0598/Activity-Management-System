@@ -14,10 +14,12 @@ namespace Application.Followers
         {
             public string TargetUsername { get; set; }
         }
+
         public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context;
             private readonly IUserAccessor _accessor;
+
             public Handler(DataContext context,IUserAccessor accessor)
             {
                 _accessor = accessor;
@@ -48,9 +50,7 @@ namespace Application.Followers
                 if(success)
                     return Result<Unit>.Success(Unit.Value);
                 return Result<Unit>.Failure("Failed to update following ");
-
             }
         }
-
     }
 }

@@ -19,8 +19,6 @@ namespace API.Services
             _configuration = configuration;
         }
 
-
-
         public string CreateToken(AppUser appUser)
         {
             var claims = new List<Claim>
@@ -29,6 +27,7 @@ namespace API.Services
                 new Claim(ClaimTypes.NameIdentifier,appUser.Id),
                 new Claim(ClaimTypes.Email,appUser.Email),
             };
+            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 

@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using API.DTOs;
 using API.Services;
 using Domain;
@@ -26,6 +22,7 @@ namespace API.Controllers
             _userManager = userManager;
             _tokenService = tokenService;
         }
+
         [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -38,7 +35,6 @@ namespace API.Controllers
             if (result)
             {
                 return CreateUserObject(user);
-
             }
             return Unauthorized();
         }
@@ -72,7 +68,7 @@ namespace API.Controllers
         }
 
 
-
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {

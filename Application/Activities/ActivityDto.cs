@@ -1,4 +1,4 @@
-using Application.Profiles;
+using Application.Comments;
 
 namespace Application.Activities
 {
@@ -14,5 +14,6 @@ namespace Application.Activities
         public string HostUsername { get; set; }
         public bool IsCancelled { get; set; }
         public ICollection<AttendeeDto> Attendees { get; set; }
+        public ICollection<CommentDto> Comments { get; set; }
     }
 }

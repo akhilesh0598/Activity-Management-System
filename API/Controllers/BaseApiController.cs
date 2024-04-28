@@ -14,6 +14,7 @@ namespace API.Controllers
         
         protected IMediator Mediator=>_mediator??=
             HttpContext.RequestServices.GetService<IMediator>();
+            
         protected ActionResult HandleResult<T>(Result<T> result)
         {
             if(result==null)
@@ -26,6 +27,7 @@ namespace API.Controllers
                 return NotFound();
             return BadRequest(result.Error);
         }
+
         protected ActionResult HandlePageResult<T>(Result<PagedList<T>> result)
         {
             if(result==null)

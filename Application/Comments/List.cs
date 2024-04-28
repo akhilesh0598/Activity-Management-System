@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.Core;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -18,6 +14,7 @@ namespace Application.Comments
             public Guid ActivityId { get; set; }
 
         }
+
         public class Handler : IRequestHandler<Query, Result<List<CommentDto>>>
         {
             private readonly DataContext _context;
@@ -37,7 +34,6 @@ namespace Application.Comments
                     .ProjectTo<CommentDto>(_mapper.ConfigurationProvider)
                     .ToListAsync();
                 return Result<List<CommentDto>>.Success(comments);
-
             }
         }
     }

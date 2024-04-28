@@ -22,6 +22,7 @@ namespace Application.Followers
             private readonly DataContext _context;
             private readonly IMapper _mapper;
             private readonly IUserAccessor _accessor;
+            
             public Handler(DataContext context, IMapper mapper,IUserAccessor accessor)
             {
                 _accessor = accessor;
