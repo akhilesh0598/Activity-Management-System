@@ -13,11 +13,13 @@ export default observer(function FollowButton({profile}:Props)
     const {updateFollowing,loading}=profileStore;
     if(userStore.user?.username===profile.username)
         return null;
+    
     function handleFollow(e:SyntheticEvent,username:string)
     {
         e.preventDefault();
         profile.following?updateFollowing(username,false):updateFollowing(username,true);
     }
+
     return (
         <Reveal animated="move">
             <Reveal.Content visible style={{width:'100%'}}>

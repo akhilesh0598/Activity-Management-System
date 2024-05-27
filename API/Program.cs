@@ -12,12 +12,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers(opt=>{
-    var policy=new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+builder.Services.AddControllers(opt =>
+{
+    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
     opt.Filters.Add(new AuthorizeFilter(policy));
 });
 
-builder.Services.AddApplicationServices(builder.Configuration);
+builder.Services.AddApplicationServices(builder.Configuration, builder.Environment);
 builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
@@ -46,14 +47,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-else 
+else
 {
-    app.Use(async (context, next) => 
+    app.Use(async (context, next) =>
     {
         context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000");
         await next.Invoke();
     });
 }
+
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
@@ -61,13 +63,14 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseDefaultFiles();
+
 app.UseStaticFiles();
 
 app.MapControllers();
 
 app.MapHub<ChatHub>("/chat");
 
-app.MapFallbackToController("Index","Fallback");
+app.MapFallbackToController("Index", "Fallback");
 
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
@@ -76,7 +79,7 @@ try
     var context = services.GetRequiredService<DataContext>();
     var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedData(context,userManager);
+    await Seed.SeedData(context, userManager);
 }
 catch (Exception ex)
 {

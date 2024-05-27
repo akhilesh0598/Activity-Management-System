@@ -8,7 +8,7 @@ import CommentStore from "./commentStore";
 
 interface Store{
     activityStore:ActivityStore;
-    comonStore:CommonStore;
+    commonStore:CommonStore;
     userStore:UserStore;
     modalStore:ModalStore;
     profileStore:ProfileStore;
@@ -16,7 +16,7 @@ interface Store{
 }
 export const store:Store={
     activityStore:new ActivityStore(),
-    comonStore:new CommonStore(),
+    commonStore:new CommonStore(),
     userStore:new UserStore(),
     modalStore:new ModalStore(),
     profileStore:new ProfileStore(),

@@ -8,13 +8,13 @@ import { Pagination, PagingParams } from "../models/pagination";
 
 export default class ActivityStore {
   activityResgistry = new Map<string, Activity>();
-  selectedActivity: Activity | undefined = undefined;
+  selectedActivity?: Activity | undefined = undefined;
   editMode = false;
   loading = false;
   loadingInitial = false;
   pagination:Pagination|null=null;
   pagingParams=new PagingParams();
-  predicate=new Map().set('all',true);
+  predicate=(new Map()).set('all',true);
 
   constructor() {
     makeAutoObservable(this);
@@ -24,15 +24,15 @@ export default class ActivityStore {
         this.pagingParams=new PagingParams();
         this.activityResgistry.clear();
         this.loadActivities();
-      }
+      } 
     )
   }
 
   setPagingParams=(pagingParams:PagingParams)=>{
     this.pagingParams=pagingParams;
   }
-  setPredicate=(predicate:string,value:string|Date)=>{
 
+  setPredicate=(predicate:string,value:string|Date)=>{
     const resetPredicate=()=>{
       this.predicate.forEach((_,key)=>{
         if(key!=='startDate')
@@ -41,7 +41,6 @@ export default class ActivityStore {
         }
       })
     }
-
     switch(predicate)
     {
       case 'all':
@@ -70,7 +69,7 @@ export default class ActivityStore {
     this.predicate.forEach((value,key)=>{
       if(key==='startDate')
       {
-        params.append(key,(value as Date).toString());
+        params.append(key,(value as Date).toISOString());
       }
       else
       {
@@ -96,15 +95,17 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
-    this.setLoadingInitial(true);
-    try {
+    this.loadingInitial=true;
+    try
+    {
       const result = await agent.Activities.list(this.axiosParams);
         result.data.forEach(activity => {
           this.setActivity(activity);
-      })
+        })
       this.setPagination(result.pagination);
       this.setLoadingInitial(false);
-    } catch (error) {
+    } catch (error) 
+    {
       console.log(error);
       this.setLoadingInitial(false);
     }
@@ -115,11 +116,14 @@ export default class ActivityStore {
 
   loadActivity = async (id: string) => {
     let activity = this.getActivity(id);
-    if (activity) {
+    if (activity) 
+    {
       this.selectedActivity = activity;
       return activity;
-    } else {
-      this.loadingInitial=true;
+    } 
+    else 
+    {
+      this.setLoadingInitial(true);
       try {
         activity = await agent.Activities.details(id);
         this.setActivity(activity);
@@ -141,7 +145,6 @@ export default class ActivityStore {
         activity.isGoing=activity.attendees!.some(a=>a.username===user.username);
         activity.isHost=activity.hostUsername===user.username;
         activity.host=activity.attendees?.find(x=>x.username===activity.hostUsername);
-
       }
       activity.date = new Date(activity.date!);
       this.activityResgistry.set(activity.id, activity);
@@ -151,12 +154,12 @@ export default class ActivityStore {
     return this.activityResgistry.get(id);
   }
 
-  setLoadingInitial = (state: boolean) => {
+   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
-  };
+  }
 
   createActivity = async (activity: ActivityFormValues) => {
-    const user=store.userStore.user;
+    const user=store.userStore!.user;
     const attendee=new Profile(user!);
     this.loading = true;
     activity.id = uuid();
@@ -166,9 +169,15 @@ export default class ActivityStore {
       newActivity.hostUsername=user!.username;
       newActivity.attendees=[attendee];
       this.setActivity(newActivity);
-      runInAction(()=> this.selectedActivity = newActivity);
+      runInAction(()=> {
+        this.selectedActivity = newActivity;
+        this.loading = false;
+      });
     } catch (error) {
       console.log(error);
+      runInAction(() => {
+        this.loading = false;
+      });
     }
   };
 
@@ -178,7 +187,7 @@ export default class ActivityStore {
       runInAction(() => {
         if(activity.id)
           {
-            const updateActivity={...this.getActivity(activity.id),...activity}
+            let updateActivity={...this.getActivity(activity.id),...activity}
             this.activityResgistry.set(activity.id, updateActivity as Activity);
             this.selectedActivity = updateActivity as Activity;
           }
@@ -202,7 +211,8 @@ export default class ActivityStore {
         this.loading = false;
       });
     }
-  };
+  }
+  
   updateAttendance= async ()=>{
     const user=store.userStore.user;
     this.loading=true;
@@ -234,6 +244,7 @@ export default class ActivityStore {
       })
     }
   }
+
   cancleActivityToToggle=async ()=>
   {
     this.loading=true;
@@ -261,10 +272,10 @@ export default class ActivityStore {
 
   updateAttendeeFollowing=(username:string)=>{
     this.activityResgistry.forEach(activity=>{
-      activity.attendees.forEach(attendee=>{
+      activity.attendees.forEach((attendee :Profile)=>{
         if(attendee.username===username)
         {
-          attendee.following ?attendee.followersCount--:attendee.followersCount++;
+          attendee.following ? attendee.followersCount--:attendee.followersCount++;
           attendee.following=!attendee.following;
         }
       })

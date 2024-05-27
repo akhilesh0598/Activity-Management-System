@@ -10,8 +10,8 @@ import ActivityListItemPlaceholder from "./ActivityListItemPlaceHolder";
 
 export default observer(function ActivityDashboard() {
   const { activityStore } = useStore();
-  const { loadActivities, activityResgistry,setPagingParams,pagination } = activityStore;
-  const [loadingNext,setLoadingNext]=useState(false);
+  const { loadActivities,setPagingParams,pagination } = activityStore;
+  const [loadingNext,setLoadingNext] = useState(false);
 
   function handleGetNext()
   {
@@ -21,38 +21,34 @@ export default observer(function ActivityDashboard() {
   }
 
   useEffect(() => {
-    if (activityResgistry.size <= 1) 
-    {
+    
       loadActivities();
-    }
-  }, [loadActivities,activityResgistry]);
+    
+  }, [loadActivities]);
 
-
+ 
   return (
       <Grid>
         <Grid.Column width="10">
           {
-            activityStore.loadingInitial && activityResgistry.size===0 && !loadingNext ?
+            activityStore.loadingInitial && !loadingNext ?
             (
               <>
                 <ActivityListItemPlaceholder />
                 <ActivityListItemPlaceholder />
-
               </>
             ) :
             (
-              <InfiniteScroll
+          <InfiniteScroll
             pageStart={0}
             loadMore={handleGetNext}
             hasMore={!loadingNext && !!pagination && pagination.currentPage<pagination.totalPages}
             initialLoad={false}
-
           >
             <ActivityList />
           </InfiniteScroll>
             )
-          }
-          
+        }
           
         </Grid.Column>
         <Grid.Column width="6">
@@ -60,7 +56,6 @@ export default observer(function ActivityDashboard() {
         </Grid.Column>
         <Grid.Column width={10}>
           <Loader active={loadingNext} />
-
         </Grid.Column>
       </Grid>
   );

@@ -18,7 +18,7 @@ axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 axios.interceptors.request.use(config=>{
-  const token=store.comonStore.token;
+  const token=store.commonStore.token;
   if(token) config.headers.Authorization=`Bearer ${token}`;
   return config;
 });
@@ -69,7 +69,7 @@ axios.interceptors.response.use( async (response) => {
         router.navigate('/not-found')
         break;
       case 500:
-        store.comonStore.setServerError(data);
+        store.commonStore.setServerError(data);
         router.navigate('/server-error')
         break;
     }
@@ -99,6 +99,7 @@ const Account={
   login:(user:UserFormValues)=>requests.post<User>('/account/login',user),
   register:(user:UserFormValues)=>requests.post<User>('/account/register',user)
 }
+
 const Profiles={
   get:(username:string)=>requests.get<Profile>(`/profiles/${username}`),
   uploadPhoto:(file:Blob)=>{
@@ -108,6 +109,7 @@ const Profiles={
       headers:{'Content-Type':'multipart/form-data'}
     })
   },
+  
   setMainPhoto:(id:string)=>requests.post(`/photos/${id}/setMain`,{}),
   deletePhoto:(id:string)=>requests.del(`photos/${id}`),
   updateProfile:(profile:Partial<Profile>)=>requests.put(`/profiles`,profile),

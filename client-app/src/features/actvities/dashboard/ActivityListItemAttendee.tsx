@@ -13,6 +13,7 @@ export default observer( function ActivityListItemAttendee({attendees}:Props)
         borderColor:'orange',
         borderWidth:3
     }
+    
     return (
         <List horizontal>
             {
@@ -35,8 +36,7 @@ export default observer( function ActivityListItemAttendee({attendees}:Props)
                             <ProfileCard profile={attendee} />
                         </Popup.Content>
                     </Popup>
-                    
-                ))  }
+                ))}
         </List>
     )
 })

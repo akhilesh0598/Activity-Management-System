@@ -37,10 +37,8 @@ export default observer( function  PhotoUploadWidget({loading,uploadPhoto}:Props
         <Grid>
             <Grid.Row/>
             <Grid.Column width={4}>
-
                 <Header sub color="teal" content="Step 1-Add Photo"/>  
                 <PhotoWidgetDropzone setFiles={setFiles} />
-
             </Grid.Column>
             <Grid.Column width={1}/>
 
@@ -60,16 +58,15 @@ export default observer( function  PhotoUploadWidget({loading,uploadPhoto}:Props
 
             <Grid.Column width={4}>
                 <Header sub color="teal" content="Step 3-Preview & Upload"/>
-                {
-                    files&&files.length>0 &&
+                {files&&files.length>0 &&(
                 <>
-                <div className="img-preview" style={{minHeight:200,overflow:"hidden"}} />
-                <Button.Group widths={2}>
-                    <Button loading={loading}  onClick={onCrop} positive icon="check" />
-                    <Button disabled={loading} onClick={()=>setFiles([])} icon="close" />
-                </Button.Group>
-                </>
-            }
+                    <div className="img-preview" style={{minHeight:200,overflow:"hidden"}} />
+                    <Button.Group widths={2}>
+                        <Button loading={loading}  onClick={onCrop} positive icon="check" />
+                        <Button disabled={loading} onClick={()=>setFiles([])} icon="close" />
+                    </Button.Group>
+                    
+                </>)}
             </Grid.Column>
 
         </Grid>

@@ -23,7 +23,7 @@ export default observer(function ActivityForm() {
     loadingInitial,
   } = activityStore;
   const { id } = useParams<{id:string}>();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const [activity, setActivity] = useState<ActivityFormValues>(new ActivityFormValues());
 

@@ -30,7 +30,7 @@ export default observer(function ActivityListItem({ activity }: Props) {
                     {activity.isHost && (
                         <Item.Description>
                             <Label basic color="orange">
-                                You are hosting this activity
+                                You are hosting this activity! 
                             </Label>
                         </Item.Description>
                     )}

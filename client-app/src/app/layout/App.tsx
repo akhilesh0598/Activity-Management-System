@@ -11,26 +11,26 @@ import ModalContainer from "../common/modals/ModalContainer";
 
 function App() {
   const location =useLocation();
-  const {comonStore,userStore}=useStore();
+  const {commonStore,userStore}=useStore();
 
   useEffect(()=>{
-    if(comonStore.token)
+    if(commonStore.token)
     {
-      userStore.getUser().finally(()=> comonStore.setAppLoaded());
+      userStore.getUser().finally(()=> commonStore.setAppLoaded());
     }
     else
     {
-      comonStore.setAppLoaded();
+      commonStore.setAppLoaded();
     }
-  },[comonStore,userStore])
+  },[commonStore,userStore])
 
-  if(!comonStore.appLoaded)
+  if(!commonStore.appLoaded)
     return <LoadingComponent content="Loading App..."/>
 
   return (
     <>
     <ScrollRestoration />
-    <ModalContainer/>
+    <ModalContainer />
     <ToastContainer position="bottom-right" hideProgressBar theme="colored"/>
     {location.pathname==='/'?<HomePage />:(
       <>

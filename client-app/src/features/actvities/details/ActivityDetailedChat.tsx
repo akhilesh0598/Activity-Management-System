@@ -7,7 +7,7 @@ import { Formik ,Form, Field, FieldProps} from 'formik';
 import * as Yup from 'yup';
 import { formatDistanceToNow } from 'date-fns/formatDistanceToNow';
 
-interface Props{
+interface Props {
     activityId:string;
 }
 
@@ -34,25 +34,19 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                 color='teal'
                 style={{border: 'none'}}
             >
-                <Header>Chat about this event</Header>
+            <Header>Chat about this event</Header>
             </Segment>
             <Segment attached clearing>
-            <Formik
-                        onSubmit={(values,{resetForm})=>
-                            commentStore.addComment(values).then(()=>{resetForm()})}
-                        initialValues={{body:''}}
-                        validationSchema={Yup.object({
-                            body:Yup.string().required(),
-
-                        })}
-                    >
+                <Formik
+                    onSubmit={(values,{resetForm})=>commentStore.addComment(values).then(()=>{resetForm()})}
+                    initialValues={{body:''}}
+                    validationSchema={Yup.object({body:Yup.string().required()})}
+                >
                         {({isSubmitting,isValid,handleSubmit})=>(
                             <Form className='ui form'>
                                 <Field name='body'>
                                     {(props:FieldProps)=>{
-                                        <div
-                                        style={{position:'relative'}}
-                                        >
+                                        <div style={{position:'relative'}}>
                                             <Loader active={isSubmitting}/>
                                             <textarea 
                                                 placeholder='Enter your comment (Enter to submit, SHIFT + enter for new line)'
@@ -66,11 +60,10 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                                                     if(e.key==='Enter' && !e.shiftKey)
                                                     {
                                                         e.preventDefault();
-                                                        isValid&& handleSubmit();
+                                                        isValid && handleSubmit();
                                                     }
                                                 }}
                                             />
-
                                         </div>
                                     }}
                                 </Field>
@@ -78,8 +71,7 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                         )}
                     </Formik>
                 <Comment.Group>
-                    {
-                        commentStore.comments.map((comment)=>(
+                    {commentStore.comments.map((comment)=>(
                     <Comment key={comment.id}>
                         <Comment.Avatar src={comment.image||'/assets/user.png'}/>
                         <Comment.Content>
@@ -90,8 +82,7 @@ export default observer(function ActivityDetailedChat({activityId}:Props) {
                             <Comment.Text style={{whiteSpace:'pre-wrap'}}>{comment.body}</Comment.Text>
                         </Comment.Content>
                     </Comment>
-                        ))
-                    }
+                    ))}
                 </Comment.Group>
             </Segment>
         </>

@@ -31,6 +31,7 @@ export default class ProfileStore{
             }
         )
     }
+
     setActiveTab=(activeTab:number)=>
     {
         this.activeTab=activeTab;
@@ -43,7 +44,6 @@ export default class ProfileStore{
             return store.userStore.user.username===this.profile.username;
         }
         return false; 
-
     }
 
     loadProfile=async (username:string)=>{
@@ -114,6 +114,7 @@ export default class ProfileStore{
            console.log(error);
         }
     }
+    
     deletePhoto=async (photo:Photo)=>{
         this.loading=true;
         try{
@@ -123,7 +124,6 @@ export default class ProfileStore{
                 {
                     this.profile.photos=this.profile.photos?.filter(p=>p.id!=photo.id);
                     this.loading=false;
-
                 }
             })
         }
